@@ -16,5 +16,7 @@ oc delete endpoints hawkular-cassandra hawkular-cassandra-nodes hawkular-metrics
 
 oc delete sa hawkular
 
+oc delete route hawkular-metrics heapster
+
 exit 0
 
