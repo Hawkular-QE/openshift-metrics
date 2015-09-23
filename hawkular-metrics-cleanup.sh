@@ -1,6 +1,6 @@
 #!/bin/bash
 # Utility script to delete Hawkular Metrics related resources from Openshift.
-# Usefuly for cleaning up a bad deployment.  Must be in the project where
+# Useful for cleaning up a bad deployment.  Must be in the project where
 # Hawkular Metrics is running
 
 if [ "$1" != "-f" ]; then
