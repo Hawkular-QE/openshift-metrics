@@ -1,0 +1,2 @@
+METRICS_ENDPOINT=http://hawkular-metrics-default.cloud.jonqe.lab.eng.bos.redhat.com/hawkular/metrics
+HEADERS=(-H "Content-type: application/json" -H "Hawkular-Tenant:heapster")
