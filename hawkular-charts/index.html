@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Hawkular Charts Standalone Example </title>
+  <meta name="description"
+        content="Hawkular Charts --  Standalone Chart Example.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="http://rawgit.com/hawkular/hawkular-charts/master/css/hawkular-charts.css">
+  <style>
+    .metricIdLabel {
+      color: #999;
+    }
+
+    .metricIdHeader {
+      margin: 20px 0 -45px 90px;
+    }
+
+    .chartWrapper {
+      height: 250px;
+    }
+
+    .paramWrapper {
+      border: 1px solid gray;
+      padding: 10px;
+      margin: 10px;
+    }
+
+    .description {
+      color: darkgray;
+      margin-left: 10px;
+    }
+  </style>
+
+  <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" data-require="angular.js@1.4.2" data-semver="1.4.2"
+          src="http://code.angularjs.org/1.4.2/angular.js"></script>
+  <script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="http://rawgit.com/Caged/d3-tip/master/index.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.3/numeral.min.js"></script>
+  <script>
+    var app = angular.module('myApp', ['hawkular.charts']);
+
+    app.controller('StandAloneController', function () {
+      // Use the helper script to identify a metric id. Escape / with %2f
+      this.tenantId = 'heapster';
+      this.metricId = 'hawkular-metrics%2F5e74d639-62ef-11e5-b5f7-001a4a101764%2Fcpu%2Fusage';
+      this.metricUrl = 'http://hawkular-metrics-default.cloud.jonqe.lab.eng.bos.redhat.com/hawkular/metrics';
+      this.timeRangeInSeconds = 28800;
+      this.refreshIntervalInSeconds = 30;
+
+    });
+
+  </script>
+<script type="text/javascript" src="http://rawgit.com/hawkular/hawkular-charts/master/hawkular-charts.js"></script>
+<!--  <script type="text/javascript" src="hawkular-charts.js"></script>-->
+
+
+</head>
+<body ng-app="myApp">
+
+<h3>Stand Alone Live Charts Example</h3>
+
+<p>Hello! The purpose of this sample is to demonstrate the ability to use the hawkular-chart tag outside of a full blown
+  angular
+  application. It's an Angular tag so it will still require Angular but eliminating many of the dependencies of the
+  application and getting it down to Angular and a couple libs and css dependencies is the goal. Placing the tag in a
+  normal html web page and have it retrieve and update data is the objective.
+  We are not there yet but here is the first pass. </p>
+
+<i>Instructions</i>
+<ol>
+  <li>cd hawkular-charts (here)</li>
+  <li>Optionally, edit stand-alone-chart-sample.html, if desired (add new metrics, change time range or refresh
+    interval)
+  </li>
+  <li>Launch http web server of your choice (example: 'python -m SimpleHTTPServer 8000 .')</li>
+  <li>View page at: http://localhost:8000/stand-alone-chart-sample.html</li>
+</ol>
+<p>Explanation: Examining the source code, there is an app and a controller required to render the angular directive.
+  The StandAloneController is just a dummy controller required to render directives(tags). It doesn't
+  really do anything just required for Angular directives. After that, the only thing that is needed for use is some
+  hawkular-chart tags with relevant metric-id and metric-url attributes. So this will all be boiled down to several
+  additional lines of code (&lt; 5) to support angular tags in pages; with one angular tag for each chart. </p>
+
+<p> Go ahead and play with the input values below to see that no handlers are needed, just link your atrributes
+  to the chart directive and let two-way binding work its magic.</p>
+
+
+<div ng-controller="StandAloneController as standalone">
+
+  <div class="paramWrapper">
+
+    <div>
+      <label for="tenantId">Tenant Id:</label>
+      <input id="tenantId"
+             type="text"
+             value="{{standalone.tenantId}}"
+             size="60">
+    </div>
+    <div>
+      <label for="metricId">Metric Id:</label>
+      <input id="metricId"
+             type="text"
+             value="{{standalone.metricId}}"
+             size="120"><span class="description">(URI encoded)</span>
+    </div>
+    <div>
+      <label for="metricUrl">Metric Url:</label>
+      <input id="metricUrl"
+             type="url"
+             value="{{standalone.metricUrl}}"
+             size="120">
+    </div>
+    <div>
+      <label for="timeRange">Time Range (in seconds):</label>
+      <input id="timeRange"
+             type="number"
+             value="{{standalone.timeRangeInSeconds}}">
+    </div>
+    <div>
+      <label for="refreshInterval">Refresh Interval (in seconds):</label>
+      <input id="refreshInterval"
+             type="number"
+             value="{{standalone.refreshIntervalInSeconds}}">
+    </div>
+  </div>
+
+  <div class="metricIdHeader">
+    <span class="metricIdLabel"> Localhost Memory Heap Used Metrics:</span>
+  </div>
+
+  <div class="chartWrapper">
+    <hawkular-chart chart-type="candlestick"
+                    metric-id="{{standalone.metricId}}"
+                    metric-url="{{standalone.metricUrl}}"
+                    metric-tenant-id="{{standalone.tenantId}}"
+                    time-range-in-seconds="{{standalone.timeRangeInSeconds}}"
+                    refresh-interval-in-seconds="{{standalone.refreshIntervalInSeconds}}"
+                    chart-height="250">
+    </hawkular-chart>
+  </div>
+
+</div>
+
+
+</body>
+</html>
