@@ -1,2 +1,12 @@
 METRICS_ENDPOINT=http://hawkular-metrics-default.cloud.jonqe.lab.eng.bos.redhat.com/hawkular/metrics
-HEADERS=(-H "Content-type: application/json" -H "Hawkular-Tenant:heapster")
+
+curl --max-time 5 ${METRICS_ENDPOINT} 2> output/cur.log | grep Hawkular
+result=$?
+
+if [ "$result" != "0" ]
+then
+    echo "Hawkular service endpoint is not responding. Is the endpoint set correctly?"
+    exit $result
+fi
+
+HEADERS=(-H "Content-type: application/json")
